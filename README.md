@@ -3,8 +3,8 @@
 **Obiectiv:** Crearea unui joc de simulare 2D în Unity care reproduce provocările și echilibrul dintre viața academică și cea personală a unui student.
 
 **Echipa de Dezvoltare:**
-* Pichler Gabriel
-* Podean Beniamin
+* Pichler Gabriel-Viorel
+* Podean Beniamin-Daniel
 
 ---
 
