@@ -72,6 +72,41 @@ Jucătorul trebuie să echilibreze următoarele variabile, care scad în timp ș
 * [ ] Finalizarea Art-ului 2D (sprite-uri, fundaluri).
 * [ ] Testare și Bug Fixing.
 
----
+## V. Mecanici de Joc Principale ⚙️
+
+Acestea sunt sistemele de bază care definesc bucla de joc (game loop) și interacțiunea jucătorului.
+
+### 1. Sistemul de Timp (Ceasul Jocului)
+* **Mecanica:** Timpul trece în joc la o rată accelerată (ex: 1 minut real = 1 oră în joc).
+* **Scop:** Acesta este "motorul" jocului. Controlează ciclul zi/noapte și declanșează degradarea statisticilor.
+
+### 2. Degradarea Statisticilor (Sistemul de Nevoi)
+* **Mecanica:** Statisticile de bază (`Oboseala`, `Foamea`, `Nevoia Socială`) se degradează (cresc sau scad) constant pe măsură ce trece timpul.
+* **Scop:** Creează provocarea de bază a jocului, forțând jucătorul să acționeze pentru a-și menține echilibrul.
+
+### 3. Sistemul de Acțiuni și Balans
+* **Mecanica:** Jucătorul alege acțiuni (fie din UI, fie prin interacțiunea cu obiecte 2D: pat, birou, frigider).
+* **Scop:** Fiecare acțiune **costă Timp** și are un set de **efecte pozitive și negative** asupra statisticilor, creând decizii strategice.
+
+#### Exemplu de Balans (Acțiune -> Efecte):
+| Acțiune | Timp Consumat | Efecte Asupra Statisticilor |
+| :--- | :--- | :--- |
+| **Dormit** | 6-8 ore | `Oboseala --` (Scade mult), `Foame +` (Crește puțin) |
+| **Studiu** | 2-4 ore | `Progres Învățare ++`, `Oboseala +`, `Nevoie Socială +` |
+| **Mâncat** | 1 oră | `Foame --` (Scade mult), `Bani -` |
+| **Socializare** | 3-5 ore | `Nevoie Socială --`, `Oboseală +`, `Bani --` |
+| **Muncă (Part-time)** | 4 ore | `Bani ++`, `Oboseala ++`, `Timp de Studiu --` |
+
+### 4. Sistemul Academic (Progres și Note)
+* **Mecanica:** Acțiunea "Studiu" crește bara de `Progres de Învățare` pentru o materie selectată.
+* **Scop:** Acesta este obiectivul pe termen lung.
+* **Eveniment:** La intervale fixe (ex: sfârșitul săptămânii/lunii) are loc un **"Examen"**. Nota finală este calculată automat pe baza barei de `Progres` acumulate.
+
+### 5. Mecanica Economică (Banii)
+* **Mecanica:** `Banii` sunt o resursă finită.
+* **Scop:** Limitează acțiunile jucătorului și adaugă un alt strat de strategie.
+* **Flux:**
+    * **Venit:** Acțiunea "Muncă" sau evenimente (ex: "Pachet de acasă").
+    * **Cheltuieli:** Acțiunile "Mâncat" și "Socializare".
 
 
