@@ -206,7 +206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -563, y: 493}
+  m_AnchoredPosition: {x: 286, y: 365}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &58180064
@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FoodObject
   hungerRestoreAmount: 10
+  gameManager: {fileID: 0}
 --- !u!61 &86202736
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -540,6 +541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FoodObject
   hungerRestoreAmount: 30
+  gameManager: {fileID: 0}
 --- !u!1 &170577656
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTransition
   transitionMenuPanel: {fileID: 58180064}
-  playerMovementScript: {fileID: 896075714}
+  playerMovementScript: {fileID: 0}
 --- !u!212 &191169157
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -871,10 +873,7 @@ PrefabInstance:
       addedObject: {fileID: 896075715}
     - targetCorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 896075714}
-    - targetCorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 896075712}
+      addedObject: {fileID: 896075720}
   m_SourcePrefab: {fileID: 100100000, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
 --- !u!1 &294766431
 GameObject:
@@ -1783,31 +1782,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
   m_PrefabInstance: {fileID: 266348392}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &896075712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 896075711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f237899ca9cdec34f8904998d0a85de2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::YSortScript
---- !u!114 &896075714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 896075711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a570bf6149dff479be43427ff2dbdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TopDownMovement
-  moveSpeed: 10
 --- !u!50 &896075715
 Rigidbody2D:
   serializedVersion: 5
@@ -1823,7 +1797,7 @@ Rigidbody2D:
   m_Mass: 11.0288725
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1872,6 +1846,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0.05929069, y: 0.2507763}
   m_Size: {x: 0.62238854, y: 0.91528225}
   m_Direction: 0
+--- !u!114 &896075720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896075711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c67dd45f3b575499526e8ab391b707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UndertaleMovement
+  moveSpeed: 45
 --- !u!1 &916406012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,7 +2697,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -74, y: 481}
+  m_AnchoredPosition: {x: 378, y: 409}
   m_SizeDelta: {x: 185.707, y: 43.6677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1654968587
@@ -3071,7 +3058,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1173336493}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1

@@ -839,7 +839,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTransition
   transitionMenuPanel: {fileID: 449841873}
-  playerMovementScript: {fileID: 2008471321}
 --- !u!1 &1316831455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,32 +1513,13 @@ PrefabInstance:
       addedObject: {fileID: 2008471322}
     - targetCorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2008471321}
-    - targetCorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2008471326}
-    - targetCorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2008471327}
+      addedObject: {fileID: 2008471324}
   m_SourcePrefab: {fileID: 100100000, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
 --- !u!1 &2008471320 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8738902458370966635, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
   m_PrefabInstance: {fileID: 1863210813}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2008471321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008471320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a570bf6149dff479be43427ff2dbdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TopDownMovement
-  moveSpeed: 10
 --- !u!50 &2008471322
 Rigidbody2D:
   serializedVersion: 5
@@ -1555,7 +1535,7 @@ Rigidbody2D:
   m_Mass: 11.0288725
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1604,7 +1584,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.05929044, y: 0.26052266}
   m_Size: {x: 0.7785582, y: 1.0525497}
   m_Direction: 0
---- !u!114 &2008471326
+--- !u!114 &2008471324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1613,27 +1593,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2008471320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400aeeefac8a0e848b7db778c1110e13, type: 3}
+  m_Script: {fileID: 11500000, guid: 40c67dd45f3b575499526e8ab391b707, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerJump
-  jumpForce: 8
-  groundCheck: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  checkRadius: 0.2
---- !u!114 &2008471327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008471320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f237899ca9cdec34f8904998d0a85de2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::YSortScript
+  m_EditorClassIdentifier: Assembly-CSharp::UndertaleMovement
+  moveSpeed: 45
 --- !u!1001 &3482202369047109314
 PrefabInstance:
   m_ObjectHideFlags: 0
