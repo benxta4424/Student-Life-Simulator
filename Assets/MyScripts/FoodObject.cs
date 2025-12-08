@@ -3,9 +3,9 @@ using UnityEngine;
 public class FoodObject : MonoBehaviour
 {
  
-    [SerializeField] private float hungerRestoreAmount = 30f;
+    [SerializeField] public float hungerRestoreAmount = 30f;
 
-    private GameManager gameManager;
+    public GameManager gameManager;
 
     void Start()
     {
