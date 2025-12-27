@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     [Header("Text Informații")]
     public TextMeshProUGUI foameText;
 
+    [Header("Ceas")]
+    public TextMeshProUGUI timeText;
+
 
     void Awake()
     {
@@ -45,6 +48,15 @@ public class UIManager : MonoBehaviour
         if (foameText != null)
         {
             foameText.text = "Foame: " + Mathf.Floor(gameManager.foame);
+        }
+    }
+
+    public void UpdateTimeUI(int hours, int minutes)
+    {
+        if (timeText != null)
+        {
+            // Formatează ora să arate mereu cu două cifre (ex: 08:05)
+            timeText.text = string.Format("{0:00}:{1:00}", hours, minutes);
         }
     }
 }

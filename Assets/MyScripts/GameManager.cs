@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public float foame = 100f;
     [SerializeField] private float foameDecayAmount = 5f;//Cat scade la fiecare unitate de timp
     [SerializeField] private float foameDecayInterval = 5f;//La cat timp scade
+
     private UIManager uiManager;
     [Header("Cronometru Foame")]
     private float hungerTimer; // Cronometrul care numără până la 5 secunde
