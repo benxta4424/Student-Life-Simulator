@@ -1,49 +1,88 @@
-﻿using TMPro.EditorUtilities;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Statistici Foame")]
     public float foame = 100f;
-    [SerializeField] private float foameDecayAmount = 5f;//Cat scade la fiecare unitate de timp
-    [SerializeField] private float foameDecayInterval = 5f;//La cat timp scade
-    [SerializeField] private float energieDecayInterval = 10f;//La cat timp scade energia
-    [SerializeField] private float energieDecayAmount = 3f;//Cat scade la fiecare unitate de timp
-    [SerializeField] private int hoursToSleep = 8;
-    [SerializeField] private float energyRestoreAmount = 100f;
+    [SerializeField] private float foameDecayAmount = 5f;
+    [SerializeField] private float foameDecayInterval = 5f;
+
     [Header("Statistici Energie")]
     public float energie = 100f;
-   
+    [SerializeField] private float energieDecayAmount = 3f;
+    [SerializeField] private float energyRestoreAmount = 100f;
+    [SerializeField] private int hoursToSleep = 8;
 
     private UIManager uiManager;
-    [Header("Cronometru Foame")]
-    private float hungerTimer; // Cronometrul care numără până la 5 secunde
-    private bool isInitialized = false; // Flag de verificare
+    private float hungerTimer;
+    private bool isInitialized = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        // Awake se executa inaintea Start si asigura ca UIManager este gasit rapid
+        // Folosim varianta modernă pentru a evita warning-ul din imaginea ta
+        if (GameObject.FindObjectsByType<GameManager>(FindObjectsSortMode.None).Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // IMPORTANT: Spunem Unity să păstreze tot obiectul "Systems_Stats"
+        // (gameObject se referă la obiectul pe care stă scriptul)
+        DontDestroyOnLoad(gameObject);
+
+        InitializeStats();
+    }
+
+    // Funcție separată pentru a căuta UI-ul la început și la schimbarea scenei
+    void InitializeStats()
+    {
         uiManager = FindAnyObjectByType<UIManager>();
         if (uiManager != null)
         {
-            // Apelam prima actualizare o data
             uiManager.UpdateStatsUI();
-            isInitialized = true;
+            isInitialized = true; // Permitem cronometrului să ruleze
         }
-        hungerTimer = foameDecayInterval; // Initializam cronometrul cu 5 secunde
-    }
-    void Start()
-    {
-        
-
     }
 
-       void DecayFoame()
+    void OnEnable()
     {
-        Debug.Log("Scădere Foame declanșată!"); // Linia de debug
-        foame -= foameDecayAmount;
-         foame = Mathf.Clamp(foame, 0f, 100f);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // Această funcție "repară" legătura cu UI-ul în scena nouă
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitializeStats();
+    }
+
+    void Update()
+    {
+        if (!isInitialized) return;
+
+        hungerTimer -= Time.deltaTime;
+        if (hungerTimer <= 0)
+        {
+            hungerTimer = foameDecayInterval;
+            DecayFoame();
+            DecayEnergie();
+        }
+    }
+
+    // --- Restul funcțiilor tale (DecayFoame, IncreaseEnergie etc.) rămân la fel ---
+    void DecayFoame()
+    {
+        foame = Mathf.Clamp(foame - foameDecayAmount, 0f, 100f);
+        if (uiManager != null) uiManager.UpdateStatsUI();
+    }
+    public void IncreaseFoame(float amount) 
+    {
+        foame = Mathf.Clamp(foame + amount, 0f, 100f);
         if (uiManager != null)
         {
             uiManager.UpdateStatsUI();
@@ -51,69 +90,13 @@ public class GameManager : MonoBehaviour
     }
     void DecayEnergie()
     {
-        Debug.Log("Scădere Energie declanșată!"); // Linia de debug
-        energie -= energieDecayAmount;
-        energie = Mathf.Clamp(energie, 0f, 100f);
-        if (uiManager != null)
-        {
-            uiManager.UpdateStatsUI();
-        }
-    }
-
-    public void IncreaseFoame(float amount)
-    {
-        foame += amount;
-        foame = Mathf.Clamp(foame, 0f, 100f);
-        if (uiManager != null)
-        {
-            uiManager.UpdateStatsUI();
-        }
-    }
-    public void IncreaseEnergie(float amount)
-    {
-        energie += amount;
-        energie = Mathf.Clamp(energie, 0f, 100f);
+        energie = Mathf.Clamp(energie - energieDecayAmount, 0f, 100f);
         if (uiManager != null) uiManager.UpdateStatsUI();
     }
-    // Update is called once per frame
-    void Update()
+
+    public void IncreaseEnergie(float amount)
     {
-        if (!isInitialized) return; // Iese daca Managerul UI nu a fost gasit
-
-        // 1. Scade timpul din cronometru
-        hungerTimer -= Time.deltaTime;
-
-        // 2. Verifica daca cronometrul a ajuns la zero
-        if (hungerTimer <= 0)
-        {
-            // Resetam cronometrul
-            hungerTimer = foameDecayInterval;
-
-            // Apelam functia de scadere a foamei
-            DecayFoame();
-            DecayEnergie();
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // 1. Refacem Energia prin GameManager
-            GameManager gm = Object.FindAnyObjectByType<GameManager>();
-            if (gm != null)
-            {
-                gm.IncreaseEnergie(energyRestoreAmount);
-            }
-
-            // 2. Înaintăm Timpul prin TimeManager
-            TimeManager tm = Object.FindAnyObjectByType<TimeManager>();
-            if (tm != null)
-            {
-                tm.AddHours(hoursToSleep);
-            }
-
-            Debug.Log("Te-ai trezit după 8 ore de somn!");
-        }
+        energie = Mathf.Clamp(energie + amount, 0f, 100f);
+        if (uiManager != null) uiManager.UpdateStatsUI();
     }
 }
-

@@ -2,36 +2,39 @@
 
 public class BedObject : MonoBehaviour
 {
-    [SerializeField] private float energyRestoreAmount = 100f; // Câtă energie primești
+    [SerializeField] private float energyRestoreAmount = 100f;
+    [SerializeField] private int hoursToSleep = 8;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Verificăm dacă cel care a atins patul este Jucătorul
         if (other.CompareTag("Player"))
         {
-            // Căutăm GameManager-ul în scenă
             GameManager gm = Object.FindAnyObjectByType<GameManager>();
-            if (gm.energie > 80)
-            {
-                Debug.Log("Nu ești destul de obosit ca să dormi!");
-                return; // Iese din funcție și nu se întâmplă nimic
-            }
-            else
-            { 
+
+            // Verificăm întâi dacă am găsit GameManager-ul
             if (gm != null)
             {
-                // Folosim funcția nouă de IncreaseEnergie din GameManager
+                // Verificăm dacă ești destul de obosit
+                if (gm.energie > 80)
+                {
+                    Debug.Log("Nu ești destul de obosit ca să dormi!");
+                    return;
+                }
+
+                // Dacă am trecut de verificare, dormim:
                 gm.IncreaseEnergie(energyRestoreAmount);
                 Debug.Log("Te-ai odihnit! Energia a fost refăcută.");
-                    TimeManager tm = FindAnyObjectByType<TimeManager>();
-                    if (tm != null)
-                    {
-                        tm.AddHours(8); // Aici apelăm funcția de mai sus
-                    }
-                }
-        }
 
-           
+                TimeManager tm = Object.FindAnyObjectByType<TimeManager>();
+                if (tm != null)
+                {
+                    tm.AddHours(hoursToSleep);
+                }
+            }
+            else
+            {
+                Debug.LogError("BedObject: GameManager nu a fost găsit!");
+            }
         }
     }
 }
