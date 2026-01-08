@@ -2334,6 +2334,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndertaleMovement
   moveSpeed: 55
+  acceleration: 200
+  dashBurstSpeed: 60
+  dashDuration: 0.15
+  dashCooldown: 0.5
+  characterSprite: {fileID: 0}
 --- !u!1 &916406012
 GameObject:
   m_ObjectHideFlags: 0
