@@ -1,106 +1,139 @@
 using UnityEngine;
+using System.Collections;
 
 public class UndertaleMovement : MonoBehaviour
 {
     [Header("Setări de Mișcare")]
-    [Tooltip("Viteza de deplasare a jucătorului.")]
-    [SerializeField] private float moveSpeed = 45f; 
+    [SerializeField] private float moveSpeed = 15f; 
+    [SerializeField] private float acceleration = 100f;
+
+    [Header("Dash Agresiv")]
+    [SerializeField] private float dashBurstSpeed = 60f; 
+    [SerializeField] private float dashDuration = 0.15f; 
+    [SerializeField] private float dashCooldown = 0.5f;
     
-    // Referințe la componente
+    [Header("Referințe SPUM (Important)")]
+    [Tooltip("Trage aici obiectul 'Body' sau 'Sprite' din interiorul personajului tău SPUM")]
+    [SerializeField] private SpriteRenderer characterSprite; 
+
     private Rigidbody2D rb;
-    private Animator animator; 
-    private Vector2 movementInput;
+    private Animator animator;
     
-    // Ultima direcție pentru orientarea Idle
-    private Vector2 lastDirection = Vector2.down; 
+    private Vector2 moveInput;
+    private Vector2 lastDirection = Vector2.down;
+    private bool isDashing;
+    private bool canDash = true;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>(); 
+        animator = GetComponent<Animator>();
 
-        if (rb == null)
+        // Dacă nu ai tras manual sprite-ul în Inspector, încercăm să îl găsim automat în copii
+        if (characterSprite == null)
         {
-            Debug.LogError("UndertaleMovement necesită componenta Rigidbody2D!");
+            characterSprite = GetComponentInChildren<SpriteRenderer>();
         }
-        
-        // Asigură-te că rotația pe Z este blocată
-        rb.freezeRotation = true;
-        
-        // Asigură-te că jucătorul are Tag-ul "Player"
-        if (!gameObject.CompareTag("Player"))
-        {
-            Debug.LogWarning("Obiectul jucătorului nu are Tag-ul 'Player'!");
+
+        if (rb != null) {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.gravityScale = 0;
+            rb.freezeRotation = true;
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
     }
 
     void Update()
     {
-        // 1. Input
-        movementInput.x = Input.GetAxisRaw("Horizontal");
-        movementInput.y = Input.GetAxisRaw("Vertical");
-        
-        // 2. ROTEȘTE CARACTERUL (FLIP)
-        FlipCharacter(movementInput.x); 
+        if (isDashing) return;
 
-        // Normalizează vectorul
-        if (movementInput.sqrMagnitude > 1) 
+        moveInput.x = Input.GetAxisRaw("Horizontal");
+        moveInput.y = Input.GetAxisRaw("Vertical");
+
+        if (moveInput.sqrMagnitude > 0.01f)
         {
-            movementInput.Normalize();
+            lastDirection = moveInput.normalized;
+            FlipCharacter(moveInput.x);
         }
 
-        // 3. ACTUALIZEAZĂ ULTIMA DIRECȚIE (pentru animația Idle)
-        if (movementInput.sqrMagnitude > 0.01f)
+        if (Input.GetKeyDown(KeyCode.Space) && canDash)
         {
-            if (Mathf.Abs(movementInput.x) > Mathf.Abs(movementInput.y))
-            {
-                lastDirection.x = movementInput.x > 0 ? 1f : -1f; 
-                lastDirection.y = 0f;
-            }
-            else
-            {
-                lastDirection.x = 0f;
-                lastDirection.y = movementInput.y > 0 ? 1f : -1f; 
-            }
+            StartCoroutine(PerformDash());
         }
 
-        // 4. Animații
         UpdateAnimations();
     }
-    
+
     void FixedUpdate()
     {
-        // Aplică mișcarea
-        rb.linearVelocity = movementInput * moveSpeed;
+        if (isDashing) return;
+
+        Vector2 targetVelocity = moveInput.normalized * moveSpeed;
+        rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
     }
-    
+
+    private IEnumerator PerformDash()
+    {
+        canDash = false;
+        isDashing = true;
+
+        Vector2 dashDir = moveInput.sqrMagnitude > 0 ? moveInput.normalized : lastDirection;
+
+        rb.linearVelocity = Vector2.zero; 
+        rb.linearVelocity = dashDir * dashBurstSpeed;
+
+        // Pornim Ghost Trail doar dacă avem un SpriteRenderer valid
+        if (characterSprite != null)
+        {
+            StartCoroutine(GhostTrailRoutine());
+        }
+
+        yield return new WaitForSeconds(dashDuration);
+
+        rb.linearVelocity = rb.linearVelocity * 0.2f; 
+        isDashing = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+
+    private IEnumerator GhostTrailRoutine()
+    {
+        while (isDashing)
+        {
+            // Creăm obiectul fantomă
+            GameObject ghost = new GameObject("DashGhost");
+            ghost.transform.position = characterSprite.transform.position;
+            ghost.transform.rotation = characterSprite.transform.rotation;
+            ghost.transform.localScale = characterSprite.transform.lossyScale;
+
+            SpriteRenderer gSr = ghost.AddComponent<SpriteRenderer>();
+            
+            // Copiem sprite-ul curent din SPUM
+            gSr.sprite = characterSprite.sprite;
+            gSr.color = new Color(1, 1, 1, 0.5f);
+            gSr.sortingOrder = characterSprite.sortingOrder - 1;
+
+            Destroy(ghost, 0.15f);
+            yield return new WaitForSeconds(0.03f);
+        }
+    }
+
     private void UpdateAnimations()
     {
         if (animator == null) return;
-        
-        bool isMoving = movementInput.x != 0 || movementInput.y != 0;
+        bool isMoving = moveInput.sqrMagnitude > 0.01f;
         animator.SetBool("IsMoving", isMoving);
         
-        Vector2 currentDir = isMoving ? movementInput : lastDirection;
-        animator.SetFloat("MoveX", currentDir.x);
-        animator.SetFloat("MoveY", currentDir.y);
+        Vector2 animDir = isMoving ? moveInput : lastDirection;
+        animator.SetFloat("MoveX", animDir.x);
+        animator.SetFloat("MoveY", animDir.y);
     }
-    
-    // Funcție pentru a roti Sprite-ul prin inversarea scalei pe X
-    private void FlipCharacter(float horizontalInput)
+
+    private void FlipCharacter(float xInput)
     {
-        Vector3 currentScale = transform.localScale;
-        float absScale = Mathf.Abs(currentScale.x); 
-        
-        if (horizontalInput > 0) // Dreapta
-        {
-            currentScale.x = -absScale; 
-        }
-        else if (horizontalInput < 0) // Stânga
-        {
-            currentScale.x = absScale; 
-        }
-        
-        transform.localScale = currentScale;
+        // La SPUM, uneori e mai bine să dăm Flip la rădăcina vizuală
+        if (xInput > 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
+        else if (xInput < 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
     }
 }

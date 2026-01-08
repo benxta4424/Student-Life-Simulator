@@ -1074,6 +1074,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 896075720}
   m_SourcePrefab: {fileID: 100100000, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
+--- !u!224 &266348393 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5176087160205750793, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
+  m_PrefabInstance: {fileID: 266348392}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &294766431
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,19 +1411,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423461677}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.002970636}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1813891307}
-  m_Father: {fileID: 896075722}
+  m_Father: {fileID: 266348393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2}
+  m_AnchoredPosition: {x: 14.765625, y: -3.840664}
   m_SizeDelta: {x: 100, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.58310723, y: 0.39943978}
 --- !u!114 &423461679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2329,11 +2334,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndertaleMovement
   moveSpeed: 55
---- !u!224 &896075722 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5176087160205750793, guid: 672092d6fae854c9da73ae8124fb85bc, type: 3}
-  m_PrefabInstance: {fileID: 266348392}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &916406012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2790,7 +2790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.01589888, b: 0.01589888, a: 1}
+  m_Color: {r: 0.9835948, g: 1, b: 0.015686274, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4179,8 +4179,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: 0.35764, y: -0.43118}
+  m_SizeDelta: {x: 175.46786, y: 34.34859}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1813891308
 MonoBehaviour:

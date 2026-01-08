@@ -1687,7 +1687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c67dd45f3b575499526e8ab391b707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UndertaleMovement
-  moveSpeed: 30
+  moveSpeed: 20
+  acceleration: 36.8
+  dashBurstSpeed: 80
+  dashDuration: 0.2
+  dashCooldown: 1
+  characterSprite: {fileID: 0}
 --- !u!50 &1419017495
 Rigidbody2D:
   serializedVersion: 5
