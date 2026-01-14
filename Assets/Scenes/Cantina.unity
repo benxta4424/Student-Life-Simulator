@@ -1553,14 +1553,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c6454dd53a3630409db9de7a499dcd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHunger
-  foame: 100
-  scadereFoame: 2
-  intervalFoame: 5
-  foameSlider: {fileID: 929171923}
-  foameText: {fileID: 1529853430}
-  energie: 100
-  energieSlider: {fileID: 0}
-  energieText: {fileID: 941935040}
 --- !u!1 &507383623
 GameObject:
   m_ObjectHideFlags: 0
@@ -3771,6 +3763,7 @@ MonoBehaviour:
   energieDecayAmount: 3
   energyRestoreAmount: 100
   hoursToSleep: 8
+  nivelInvatare: 0
 --- !u!1 &1529853429
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,6 +4606,7 @@ MonoBehaviour:
   foameText: {fileID: 1529853430}
   energieText: {fileID: 941935040}
   timeText: {fileID: 65152555}
+  invatatText: {fileID: 0}
 --- !u!114 &1700176092
 MonoBehaviour:
   m_ObjectHideFlags: 0
