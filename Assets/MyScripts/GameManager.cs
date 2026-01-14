@@ -18,6 +18,29 @@ public class GameManager : MonoBehaviour
     private float hungerTimer;
     private bool isInitialized = false;
 
+    [Header("Statistici Progresie")]
+    public float nivelInvatare = 0f; // Nivelul tău actual
+
+    // Funcția care verifică dacă ai destulă energie și crește învățarea
+    public void Study(float costEnergie, float gainInvatare)
+    {
+        if (energie >= costEnergie)
+        {
+            energie -= costEnergie; // Consumă energia
+            nivelInvatare += gainInvatare; // Crește nivelul de învățare
+            
+            // Limităm valorile între 0 și 100 pentru siguranță
+            energie = Mathf.Clamp(energie, 0f, 100f); 
+            
+            if (uiManager != null) uiManager.UpdateStatsUI(); // Actualizează barele și textele
+            Debug.Log("Ai învățat! Nivel: " + nivelInvatare + " | Energie rămasă: " + energie);
+        }
+        else
+        {
+            Debug.Log("Ești prea obosit pentru a studia!");
+        }
+    }
+
     void Awake()
     {
         // Folosim varianta modernă pentru a evita warning-ul din imaginea ta

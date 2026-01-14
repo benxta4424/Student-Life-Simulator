@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [Header("Ceas")]
     public TextMeshProUGUI timeText;
 
+    [Header("Text Progresie")]
+    public TextMeshProUGUI invatatText; // Trage aici noul obiect de text din Canvas
 
     void Awake()
     {
@@ -53,6 +55,11 @@ public class UIManager : MonoBehaviour
         if (energieText != null)
         {
             energieText.text = "Energie: " + Mathf.Floor(gameManager.energie) + "%";
+        }
+        if (invatatText != null && gameManager != null)
+        {
+            // Afișăm nivelul de învățare rotunjit
+            invatatText.text = "Învățat: " + Mathf.Floor(gameManager.nivelInvatare);
         }
     }
 

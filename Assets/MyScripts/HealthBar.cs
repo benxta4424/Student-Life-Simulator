@@ -3,25 +3,38 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public Slider slider;
-    private Transform playerTransform;
+    public int maxHealth = 100;
+    private int currentHealth;
+    public Slider slider; // Trage aici obiectul hpBoss
 
     void Start()
     {
-        // Găsim jucătorul (părintele Canvas-ului)
-        playerTransform = transform.root;
+        currentHealth = maxHealth;
+        if (slider != null)
+        {
+            slider.maxValue = maxHealth;
+            slider.value = maxHealth;
+        }
     }
 
-    void LateUpdate()
+    // Aceasta este funcția care lipsea și dădea eroare!
+    public void TakeDamage(int damage)
     {
-        // Forțăm bara să stea dreaptă chiar dacă jucătorul se rotește/oglindește
-        transform.rotation = Quaternion.identity;
-
-        // Actualizăm valoarea barei folosind foamea sau o nouă variabilă de viață din GameManager
-        GameManager gm = FindAnyObjectByType<GameManager>();
-        if (gm != null)
+        currentHealth -= damage;
+        if (slider != null) 
         {
-            slider.value = gm.foame / 100f; // Exemplu folosind foamea existentă
+            slider.value = currentHealth;
         }
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Boss-ul a murit!");
+        Destroy(gameObject); // Această linie face boss-ul să dispară definitiv
     }
 }
