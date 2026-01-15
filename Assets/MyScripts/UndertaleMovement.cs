@@ -11,6 +11,7 @@ public class UndertaleMovement : MonoBehaviour
     [SerializeField] private float dashBurstSpeed = 60f; 
     [SerializeField] private float dashDuration = 0.15f; 
     [SerializeField] private float dashCooldown = 0.5f;
+    [SerializeField] private float dashHungerCost = 5f; // Costul în puncte de foame
     
     [Header("Referințe SPUM (Important)")]
     [Tooltip("Trage aici obiectul 'Body' sau 'Sprite' din interiorul personajului tău SPUM")]
@@ -29,7 +30,7 @@ public class UndertaleMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        // Dacă nu ai tras manual sprite-ul în Inspector, încercăm să îl găsim automat în copii
+        // Căutăm automat SpriteRenderer-ul dacă nu este atribuit
         if (characterSprite == null)
         {
             characterSprite = GetComponentInChildren<SpriteRenderer>();
@@ -56,9 +57,17 @@ public class UndertaleMovement : MonoBehaviour
             FlipCharacter(moveInput.x);
         }
 
+        // MODIFICAT: Verificăm foamea prin GameManager înainte de a permite Dash-ul
         if (Input.GetKeyDown(KeyCode.Space) && canDash)
         {
-            StartCoroutine(PerformDash());
+            if (GameManager.instance != null && GameManager.instance.ConsumeHungerForDash(dashHungerCost))
+            {
+                StartCoroutine(PerformDash());
+            }
+            else
+            {
+                Debug.Log("Ți-e prea foame ca să mai dai dash!");
+            }
         }
 
         UpdateAnimations();
@@ -82,7 +91,6 @@ public class UndertaleMovement : MonoBehaviour
         rb.linearVelocity = Vector2.zero; 
         rb.linearVelocity = dashDir * dashBurstSpeed;
 
-        // Pornim Ghost Trail doar dacă avem un SpriteRenderer valid
         if (characterSprite != null)
         {
             StartCoroutine(GhostTrailRoutine());
@@ -101,15 +109,12 @@ public class UndertaleMovement : MonoBehaviour
     {
         while (isDashing)
         {
-            // Creăm obiectul fantomă
             GameObject ghost = new GameObject("DashGhost");
             ghost.transform.position = characterSprite.transform.position;
             ghost.transform.rotation = characterSprite.transform.rotation;
             ghost.transform.localScale = characterSprite.transform.lossyScale;
 
             SpriteRenderer gSr = ghost.AddComponent<SpriteRenderer>();
-            
-            // Copiem sprite-ul curent din SPUM
             gSr.sprite = characterSprite.sprite;
             gSr.color = new Color(1, 1, 1, 0.5f);
             gSr.sortingOrder = characterSprite.sortingOrder - 1;
@@ -132,7 +137,6 @@ public class UndertaleMovement : MonoBehaviour
 
     private void FlipCharacter(float xInput)
     {
-        // La SPUM, uneori e mai bine să dăm Flip la rădăcina vizuală
         if (xInput > 0) transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
         else if (xInput < 0) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
     }

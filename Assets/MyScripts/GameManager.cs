@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // Persistenta intre scene
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
         InitializeStats();
     }
 
-    // Aceasta este functia pe care o cauta FoodObject.cs
     public void IncreaseFoame(float amount) 
     {
         foame = Mathf.Clamp(foame + amount, 0f, 100f);
@@ -43,6 +42,18 @@ public class GameManager : MonoBehaviour
     {
         energie = Mathf.Clamp(energie + amount, 0f, 100f);
         if (uiManager != null) uiManager.UpdateStatsUI();
+    }
+
+    // NOU: Funcție pentru a consuma foame la Dash
+    public bool ConsumeHungerForDash(float cost)
+    {
+        if (foame >= cost)
+        {
+            foame -= cost;
+            if (uiManager != null) uiManager.UpdateStatsUI();
+            return true; // Are destulă foame pentru dash
+        }
+        return false; // Nu are destulă foame
     }
 
     public void Study(float costEnergie, float gainInvatare)
@@ -57,12 +68,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // Chiar daca UI-ul nu e gasit, stats ar trebui sa scada
         hungerTimer -= Time.deltaTime;
         if (hungerTimer <= 0)
         {
             hungerTimer = foameDecayInterval;
-            DecayFoame();
+            // DecayFoame(); // MODIFICAT: Am comentat această linie ca să NU mai scadă singură
             DecayEnergie();
         }
     }
@@ -70,19 +80,16 @@ public class GameManager : MonoBehaviour
     void DecayFoame()
     {
         foame = Mathf.Clamp(foame - foameDecayAmount, 0f, 100f);
-        // Cautam UI-ul din nou daca am pierdut referinta
         if (uiManager == null) uiManager = FindAnyObjectByType<UIManager>();
         if (uiManager != null) uiManager.UpdateStatsUI();
     }
 
     void DecayEnergie()
     {
-        // Folosim variabila energieDecayAmount care apărea ca fiind nefolosită
         energie = Mathf.Clamp(energie - energieDecayAmount, 0f, 100f);
         if (uiManager != null) uiManager.UpdateStatsUI();
     }
 
-    // --- Restul logicii de Update si OnSceneLoaded din scriptul tau anterior ---
     void InitializeStats()
     {
         uiManager = Object.FindAnyObjectByType<UIManager>();
