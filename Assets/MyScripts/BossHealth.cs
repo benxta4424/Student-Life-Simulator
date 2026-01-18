@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class BossHealth : MonoBehaviour
 {
     public int maxHealth = 5000; 
-    protected int currentHealth; // protected permite accesul scripturilor care moștenesc
+    protected int currentHealth; // ptr ca am doi bosi si folosesc ptr amandoi vreau sa am separat
     public Slider hpSlider;
 
-    // Start trebuie să fie virtual pentru a fi extins
+
     protected virtual void Start()
     {
         currentHealth = maxHealth;

@@ -27,18 +27,16 @@ public class BossAI : MonoBehaviour
         // Miscare spre jucator
         transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
 
-        // Tragere
+        // tras
         if (Time.time >= nextFireTime)
         {
             Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             nextFireTime = Time.time + fireRate;
         }
     }
-
-    // NU pune Destroy(gameObject) aici!
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Boss-ul a atins: " + other.name);
-        // Aici poti pune doar scaderea vietii jucatorului
+
     }
 }

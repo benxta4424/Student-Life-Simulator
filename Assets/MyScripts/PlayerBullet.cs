@@ -30,9 +30,6 @@ public class PlayerBullet : MonoBehaviour
                 nivel = GameManager.instance.nivelInvatare;
             }
 
-            // Nivel 0 => 0.01 damage -> Rotunjit la 0. Boss-ul nu pățește nimic.
-            // Nivel 1 => 0.51 damage -> Rotunjit la 1. Boss-ul pierde 0.02% viață.
-            // Nivel 10 => 5.01 damage -> Rotunjit la 5.
             float damageCalculat = BAZA_DAMAGE_INFIM + (nivel * MULTIPLICATOR_STUDIU);
 
             // Mathf.RoundToInt rotunjește 0.5 la cel mai apropiat număr par (0)

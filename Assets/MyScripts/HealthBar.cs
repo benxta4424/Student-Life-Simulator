@@ -5,8 +5,7 @@ public class HealthBar : MonoBehaviour
 {
     public int maxHealth = 100;
     private int currentHealth;
-    public Slider slider; // Trage aici obiectul hpBoss
-
+    public Slider slider;
     void Start()
     {
         currentHealth = maxHealth;
@@ -17,7 +16,6 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    // Aceasta este funcția care lipsea și dădea eroare!
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
